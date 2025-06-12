@@ -1,3 +1,4 @@
+<%--<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>--%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,25 +21,35 @@
                 <p class="brand-subtitle">Complaint Management System</p>
             </div>
 
+            <%
+                String error = (String) session.getAttribute("error");
+                if (error != null) {
+            %>
+            <div class="error" style="color: red; font-weight: bold;"><%= error %></div>
+            <%
+                    session.removeAttribute("error"); // Prevent repeat message
+                }
+            %>
+
             <!-- Sign In Form -->
-            <form id="signinForm">
+            <form id="signinForm" action="/cs/loginServlet" method="post">
                 <!-- Name Field -->
                 <div class="form-floating">
-                    <input type="text" class="form-control" id="fullName" placeholder="Full Name" required>
+                    <input name="name" type="text" class="form-control" id="fullName" placeholder="Full Name" required>
                     <label for="fullName">Full Name</label>
                     <i class="fas fa-user input-group-icon"></i>
                 </div>
 
                 <!-- Email Field -->
                 <div class="form-floating">
-                    <input type="email" class="form-control" id="email" placeholder="Email Address" required>
+                    <input name="email" type="email" class="form-control" id="email" placeholder="Email Address" required>
                     <label for="email">Email Address</label>
                     <i class="fas fa-envelope input-group-icon"></i>
                 </div>
 
                 <!-- Password Field -->
                 <div class="form-floating">
-                    <input type="password" class="form-control" id="password" placeholder="Password" required>
+                    <input name="password" type="password" class="form-control" id="password" placeholder="Password" required>
                     <label for="password">Password</label>
                     <i class="fas fa-lock input-group-icon"></i>
                 </div>
@@ -56,43 +67,11 @@
                     <i class="fas fa-sign-in-alt me-2"></i>
                     Sign In to CMS
                 </button>
-
-                <!-- Forgot Password Link -->
-                <div class="forgot-password">
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">
-                        Forgot your password?
-                    </a>
-                </div>
             </form>
 
             <!-- Footer -->
             <div class="footer-text">
-                <p>Secure access to complaint management system</p>
                 <p>If you don't have an account - <a href="./signupPage.html" id="signupLink">Sign Up</a></p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Forgot Password Modal -->
-    <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content" style="background: var(--card-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(20px);">
-                <div class="modal-header" style="border-bottom: 1px solid rgba(255,255,255,0.1);">
-                    <h5 class="modal-title" id="forgotPasswordModalLabel" style="color: var(--text-primary);">Reset Password</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Enter your email address and we'll send you a link to reset your password.</p>
-                    <div class="form-floating">
-                        <input type="email" class="form-control" id="resetEmail" placeholder="Email Address">
-                        <label for="resetEmail">Email Address</label>
-                        <i class="fas fa-envelope input-group-icon"></i>
-                    </div>
-                </div>
-                <div class="modal-footer" style="border-top: 1px solid rgba(255,255,255,0.1);">
-                    <button type="button" class="btn" data-bs-dismiss="modal" style="color: var(--text-secondary);">Cancel</button>
-                    <button type="button" class="btn btn-signin" style="width: auto; margin-top: 0;">Send Reset Link</button>
-                </div>
             </div>
         </div>
     </div>
@@ -119,8 +98,7 @@
             const submitBtn = form.querySelector('.btn-signin');
             
             form.addEventListener('submit', function(e) {
-                e.preventDefault(); // Prevent actual submission since this is UI only
-                
+
                 // Add loading state
                 submitBtn.classList.add('loading');
                 submitBtn.disabled = true;
