@@ -31,6 +31,28 @@
               <p class="btn btn-primary">${error}</p>
           </c:if>
 
+        <%
+          // Check if user is already logged in
+          if (session.getAttribute("loggedIn") != null && (Boolean) session.getAttribute("loggedIn")) {
+            response.sendRedirect(request.getContextPath() + "/view/pages/dashboard.jsp");
+            return;
+          }
+
+          // Display error message if any
+          String error = (String) session.getAttribute("error");
+          if (error != null && !error.isEmpty()) {
+        %>
+        <script>
+          Swal.fire({
+            icon: 'error',
+            title: 'Login Failed!',
+            text: '<%= error %>'
+          });
+        </script>
+        <%
+            session.removeAttribute("error");
+          }
+        %>
 
         <!-- Sign In Form -->
         <form id="signinForm" action="/cs/loginServlet" method="post">
