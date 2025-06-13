@@ -45,7 +45,7 @@ public class LoginServlet extends HttpServlet {
                 }
             }
             if (!isFound) {
-                req.setAttribute("error", "Invalid username or password");
+                req.getSession().setAttribute("error", "Invalid Email or Password");
                 resp.sendRedirect(req.getContextPath() + "/view/pages/signinPage.jsp");
             }
         } catch (SQLException e) {
