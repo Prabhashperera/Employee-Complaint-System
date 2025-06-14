@@ -42,6 +42,7 @@
           String error = (String) session.getAttribute("error");
           if (error != null && !error.isEmpty()) {
         %>
+
         <script>
           Swal.fire({
             icon: 'error',
