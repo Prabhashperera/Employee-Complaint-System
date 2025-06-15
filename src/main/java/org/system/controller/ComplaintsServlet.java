@@ -17,32 +17,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet("/home")
+@WebServlet("/saveComplaint")
 public class ComplaintsServlet extends HttpServlet {
     @Resource(name = "java:comp/env/jdbc/complaint_db")
     private DataSource ds;
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            PreparedStatement stm = ds.getConnection().prepareStatement("select * from complaints");
-            ResultSet rs = stm.executeQuery();
-            List<ComplaintModel> complaints = new ArrayList<>();
-            while (rs.next()) {
-                ComplaintModel complaint = new ComplaintModel();
-                complaint.setId(rs.getString("id"));
-                complaint.setTitle(rs.getString("title"));
-                complaint.setDescription(rs.getString("description"));
-                complaint.setPriority(rs.getString("priority"));
-                complaint.setStatus(rs.getString("status"));
-                complaint.setSubmittedBy(req.getParameter("submitted_by"));
-                complaint.setSubmittedTime(rs.getString("submitted_at"));
-                complaints.add(complaint);
-            }
-
-            resp.getWriter().print(complaints);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            PreparedStatement stm = ds.getConnection().prepareStatement("INSERT INTO complaints values(?,?,?,?,?,?,?)");
+            stm.setString(1, req.getParameter(""));
+        }catch (Exception e) {
+            e.printStackTrace();
         }
     }
+
+
 }

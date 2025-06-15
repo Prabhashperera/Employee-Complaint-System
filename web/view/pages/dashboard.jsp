@@ -1,3 +1,4 @@
+
 <%--
   Created by IntelliJ IDEA.
   User: Prabash Perera
@@ -157,7 +158,7 @@
                         </h5>
                     </div>
                     <div class="card-body">
-                        <form id="complaintForm" action="" method="post">
+                        <form id="complaintForm" action="/cs/saveComplaint" method="post">
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="complaintTitle" class="form-label">
@@ -171,10 +172,10 @@
                                         <i class="bi bi-exclamation-triangle"></i> Priority *
                                     </label>
                                     <select class="form-select" id="priority" name="priority" required>
-                                        <option value="">Select Priority</option>
-                                        <option value="Low" class="priority-low">Low</option>
-                                        <option value="Medium" class="priority-medium">Medium</option>
-                                        <option value="High" class="priority-high">High</option>
+                                        <option name="none" value="">Select Priority</option>
+                                        <option name="Low" value="Low" class="priority-low">Low</option>
+                                        <option name="Medium" value="Medium" class="priority-medium">Medium</option>
+                                        <option name="High" value="High" class="priority-high">High</option>
                                     </select>
                                 </div>
                             </div>
@@ -185,19 +186,8 @@
                                 <textarea class="form-control" id="description" name="description"
                                           rows="4" required placeholder="Describe your complaint in detail..."></textarea>
                             </div>
-                            <div class="mb-3">
-                                <label for="category" class="form-label">
-                                    <i class="bi bi-tags"></i> Category
-                                </label>
-                                <select class="form-select" id="category" name="category">
-                                    <option value="">Select Category</option>
-                                    <option value="Technical">Technical Issue</option>
-                                    <option value="Service">Service Quality</option>
-                                    <option value="Billing">Billing</option>
-                                    <option value="HR">Human Resources</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                            </div>
+                            <input type="hidden" name="submittedBy" id="submittedBy" value="<%= userName %>">
+                            <input type="hidden" name="submittedAt" id="submittedAt">
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                 <button type="reset" class="btn btn-outline-secondary me-md-2">
                                     <i class="bi bi-arrow-clockwise"></i> Reset
@@ -218,6 +208,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+
     // Update current time
     function updateTime() {
         const now = new Date();
@@ -238,7 +229,15 @@
     updateTime(); // Initial call
 
     // Form validation and submission
-    document.getElementById('complaintForm').addEventListener('submit', function(e) {
+    document.getElementById('complaintForm').addEventListener('submit', function (e) {
+        const now = new Date();
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        const seconds = now.getSeconds().toString().padStart(2, '0');
+        const time24hr = hours + ":" + minutes + ":" + seconds;
+        console.log(time24hr); // Example: 18:42:09
+
+        document.getElementById('submittedAt').value = time24hr;
 
         const title = document.getElementById('complaintTitle').value.trim();
         const description = document.getElementById('description').value.trim();
@@ -248,7 +247,9 @@
             alert('Please fill in all required fields.');
             return;
         }
+
     });
+
 
     // Priority color change on select
     document.getElementById('priority').addEventListener('change', function() {
