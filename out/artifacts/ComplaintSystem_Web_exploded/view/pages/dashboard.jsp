@@ -15,162 +15,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-
-    <style>
-        :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --accent-color: #e74c3c;
-            --success-color: #27ae60;
-            --warning-color: #f39c12;
-            --light-bg: #ecf0f1;
-            --dark-text: #2c3e50;
-        }
-
-        body {
-            background-color: var(--light-bg);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        .navbar-custom {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .navbar-brand {
-            font-weight: bold;
-            font-size: 1.5rem;
-        }
-
-        .sidebar {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            padding: 0;
-            overflow: hidden;
-        }
-
-        .sidebar-header {
-            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
-            color: white;
-            padding: 1.5rem;
-            text-align: center;
-        }
-
-        .profile-img {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            border: 4px solid rgba(255,255,255,0.3);
-            margin-bottom: 1rem;
-        }
-
-        .nav-link-custom {
-            color: var(--dark-text);
-            padding: 1rem 1.5rem;
-            border: none;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-        }
-
-        .nav-link-custom:hover {
-            background-color: var(--light-bg);
-            transform: translateX(5px);
-            color: var(--secondary-color);
-        }
-
-        .nav-link-custom i {
-            margin-right: 0.75rem;
-            width: 20px;
-        }
-
-        .main-content {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            padding: 2rem;
-        }
-
-        .dashboard-header {
-            background: linear-gradient(135deg, var(--success-color), var(--secondary-color));
-            color: white;
-            padding: 1.5rem;
-            border-radius: 15px;
-            margin-bottom: 2rem;
-        }
-
-        .time-display {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-
-        .form-control {
-            border-radius: 10px;
-            border: 2px solid #e9ecef;
-            padding: 0.75rem 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .form-control:focus {
-            border-color: var(--secondary-color);
-            box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
-        }
-
-        .form-select {
-            border-radius: 10px;
-            border: 2px solid #e9ecef;
-            padding: 0.75rem 1rem;
-        }
-
-        .btn-primary-custom {
-            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
-            border: none;
-            border-radius: 10px;
-            padding: 0.75rem 2rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary-custom:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
-        }
-
-        .priority-high {
-            color: var(--accent-color);
-            font-weight: bold;
-        }
-
-        .priority-medium {
-            color: var(--warning-color);
-            font-weight: bold;
-        }
-
-        .priority-low {
-            color: var(--success-color);
-            font-weight: bold;
-        }
-
-        .card-custom {
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
-        }
-
-        .card-custom:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                margin-bottom: 1rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="../styles/dashboard.css">
 </head>
 <body>
 <%
@@ -392,15 +237,6 @@
     setInterval(updateTime, 1000);
     updateTime(); // Initial call
 
-    // Navigation functions
-    function showComplaints() {
-        window.location.href = '<%= request.getContextPath() %>/complaint/list';
-    }
-
-    function employeeManage() {
-        window.location.href = '<%= request.getContextPath() %>/employee/manage';
-    }
-
     // Form validation and submission
     document.getElementById('complaintForm').addEventListener('submit', function(e) {
         e.preventDefault();
@@ -413,20 +249,6 @@
             alert('Please fill in all required fields.');
             return;
         }
-
-        // Show loading state
-        const submitBtn = this.querySelector('button[type="submit"]');
-        const originalText = submitBtn.innerHTML;
-        submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Submitting...';
-        submitBtn.disabled = true;
-
-        // Simulate form submission (replace with actual submission)
-        setTimeout(() => {
-            alert('Complaint submitted successfully!');
-            this.reset();
-            submitBtn.innerHTML = originalText;
-            submitBtn.disabled = false;
-        }, 2000);
     });
 
     // Priority color change on select
