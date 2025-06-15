@@ -7,6 +7,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <html>
 <head>
     <title>Complaint System Dashboard</title>
@@ -17,6 +19,7 @@
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../styles/dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 <%
@@ -158,6 +161,29 @@
                         </h5>
                     </div>
                     <div class="card-body">
+
+                        <c:if test="${not empty sessionScope.complaintSaved}">
+                            <script>
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success!',
+                                    text: '${complaintSaved}'
+                                });
+                            </script>
+                            <c:remove var="complaintSaved" scope="session"/>
+                        </c:if>
+
+                        <c:if test="${not empty sessionScope.complaintNotSaved}">
+                            <script>
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops!',
+                                    text: '${complaintNotSaved}'
+                                });
+                            </script>
+                            <c:remove var="complaintNotSaved" scope="session"/>
+                        </c:if>
+
                         <form id="complaintForm" action="/cs/saveComplaint" method="post">
                             <div class="row">
                                 <div class="col-md-6 mb-3">

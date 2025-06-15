@@ -37,8 +37,17 @@ public class ComplaintsServlet extends HttpServlet {
             stm.setString(6, req.getParameter("submittedBy"));
             stm.setString(7, req.getParameter("submittedAt"));
             int i = stm.executeUpdate();
+            if (i > 0) {
+                req.getSession().setAttribute("complaintSaved", "Complaint Saved");
+            }else {
+                req.getSession().setAttribute("complaintNotSaved", "Complaint NOT Saved");
+            }
             System.out.println(i);
+            resp.sendRedirect(req.getContextPath() + "/view/pages/dashboard.jsp");
+
         }catch (Exception e) {
+            req.getSession().setAttribute("complaintNotSaved", "Complaint NOT Saved");
+            resp.sendRedirect(req.getContextPath() + "/view/pages/dashboard.jsp");
             e.printStackTrace();
         }
     }
