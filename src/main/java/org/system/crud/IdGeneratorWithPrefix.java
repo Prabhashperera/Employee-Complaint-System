@@ -1,16 +1,17 @@
 package org.system.crud;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class IdGeneratorWithPrefix {
 
-    public static String generateNextId(Connection conn, String tableName, String idColumn,
+    public static String generateNextId(DataSource conn, String tableName, String idColumn,
                                         String prefix, int numberLength) throws SQLException {
         String sql = "SELECT MAX(" + idColumn + ") AS max_id FROM " + tableName + " WHERE " + idColumn + " LIKE ?";
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (PreparedStatement ps = conn.getConnection().prepareStatement(sql)) {
             ps.setString(1, prefix + "%");  // only IDs starting with prefix
 
             try (ResultSet rs = ps.executeQuery()) {

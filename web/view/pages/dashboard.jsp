@@ -231,13 +231,17 @@
     // Form validation and submission
     document.getElementById('complaintForm').addEventListener('submit', function (e) {
         const now = new Date();
-        const hours = now.getHours().toString().padStart(2, '0');
-        const minutes = now.getMinutes().toString().padStart(2, '0');
-        const seconds = now.getSeconds().toString().padStart(2, '0');
-        const time24hr = hours + ":" + minutes + ":" + seconds;
-        console.log(time24hr); // Example: 18:42:09
+        const yyyy = now.getFullYear();
+        const mm = String(now.getMonth() + 1).padStart(2, '0');
+        const dd = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
 
-        document.getElementById('submittedAt').value = time24hr;
+        // Final format: 2025-06-15 22:26:05
+        const fullDatetime = yyyy + "-" + mm + "-" + dd + " " + hours + ":" + minutes + ":" + seconds;
+        document.getElementById("submittedAt").value = fullDatetime;
+
 
         const title = document.getElementById('complaintTitle').value.trim();
         const description = document.getElementById('description').value.trim();
