@@ -81,10 +81,10 @@
 
                 <!-- Navigation Links -->
                 <div class="list-group list-group-flush">
-                    <a href="#" class="nav-link-custom active">
+                    <a href="#" class="nav-link-custom active show_Dashboard">
                         <i class="bi bi-speedometer2"></i> Dashboard
                     </a>
-                    <a href="#" class="nav-link-custom">
+                    <a href="#" class="nav-link-custom show_Complaints">
                         <i class="bi bi-list-ul"></i> Show Complaints
                     </a>
                     <% if ("admin".equals(userRole)){ %>
@@ -249,8 +249,14 @@
 
 <!-- Bootstrap 5 JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
+    //Routing
+    $(".show_Complaints").click(() => {
+        $(".complaint-section").css("display", "block");
+        $(".dashboard-section").css("display", "none");
+    });
+
 
     // Update current time
     function updateTime() {
@@ -312,6 +318,5 @@
         }
     });
 </script>
-
 </body>
 </html>
