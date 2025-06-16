@@ -84,7 +84,7 @@
                     <a href="#" class="nav-link-custom active show_Dashboard">
                         <i class="bi bi-speedometer2"></i> Dashboard
                     </a>
-                    <a href="#" class="nav-link-custom show_Complaints">
+                    <a href="/cs/saveComplaint" class="nav-link-custom show_Complaints">
                         <i class="bi bi-list-ul"></i> Show Complaints
                     </a>
                     <% if ("admin".equals(userRole)){ %>
@@ -106,7 +106,7 @@
         <div class="col-lg-9 col-md-8">
             <%-- TODO:ReplaceMenter--%>
             <div class="main-content">
-                //Dashboard Section
+<%--                //Dashboard Section--%>
                 <section class="dashboard-section">
                     <!-- Dashboard Header -->
                     <div class="dashboard-header">
@@ -231,7 +231,7 @@
                     </div>
                 </section>
 
-                //Complaint Section
+<%--                //Complaint Section--%>
                 <section style="display: none" class="complaint-section">
                     <!-- Dashboard Header -->
                     <div class="dashboard-header">
@@ -246,8 +246,19 @@
                     </div>
                     <%-- Complaint List --%>
                     <div class="complaints-list">
-
+                        <c:forEach var="complaint" items="${complaintList}">
+                            <div class="complaint-item">
+                                <h4>${complaint.title}</h4>
+                                <p><strong>ID:</strong> ${complaint.id}</p>
+                                <p><strong>Description:</strong> ${complaint.description}</p>
+                                <p><strong>Priority:</strong> ${complaint.priority}</p>
+                                <p><strong>Submitted By:</strong> ${complaint.submittedBy}</p>
+                                <p><strong>Submitted At:</strong> ${complaint.submittedTime}</p>
+                                <hr/>
+                            </div>
+                        </c:forEach>
                     </div>
+
 
                 </section>
             </div>
@@ -260,15 +271,16 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
     //Routing's
-    $(".show_Complaints").click(() => {
-        $(".complaint-section").css("display", "block");
-        $(".dashboard-section").css("display", "none");
-    });
+        const params = new URLSearchParams(window.location.search);
+        const view = params.get("view");
 
-    $(".show_Dashboard").click(() => {
-        $(".dashboard-section").css("display", "block");
-        $(".complaint-section").css("display", "none");
-    });
+        if (view === "complaints") {
+            $(".complaint-section").css("display", "block");
+            $(".dashboard-section").css("display", "none");
+        } else {
+            $(".dashboard-section").css("display", "block");
+            $(".complaint-section").css("display", "none");
+        }
 
     // Update current time
     function updateTime() {

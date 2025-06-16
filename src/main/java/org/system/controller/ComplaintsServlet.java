@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.system.crud.IdGeneratorWithPrefix;
+import org.system.dao.ComplaintDAO;
 import org.system.model.ComplaintModel;
 
 import javax.sql.DataSource;
@@ -55,7 +56,25 @@ public class ComplaintsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try{
+            PreparedStatement stm = ds.getConnection().prepareStatement("SELECT * FROM complaints");
+            ResultSet rs = stm.executeQuery();
+            List<ComplaintDAO> complaintList = new ArrayList<>();
+            while (rs.next()) {
+                ComplaintDAO complaint = new ComplaintDAO();
+                complaint.setId(rs.getString("id"));
+                complaint.setTitle(rs.getString("title"));
+                complaint.setDescription(rs.getString("description"));
+                complaint.setPriority(rs.getString("priority"));
+                complaint.setSubmittedBy(rs.getString("submitted_by"));
+                complaint.setSubmittedTime(rs.getString("submitted_at"));
+                complaintList.add(complaint);
+            }
+            System.out.println(complaintList.size());
+            if (complaintList.size() > 0) {
+                req.getSession().setAttribute("complaintList", complaintList);
+                resp.sendRedirect(req.getContextPath() + "/view/pages/dashboard.jsp?view=complaints");
 
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
