@@ -1,0 +1,228 @@
+.complaints-list {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.complaint-item {
+    background: #fff;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.complaint-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.complaint-item h4 {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    margin: 0;
+    padding: 1.5rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    position: relative;
+}
+
+.complaint-item p {
+    margin: 0;
+    padding: 0.75rem 1.5rem;
+    border-bottom: 1px solid #f1f3f4;
+    display: flex;
+    align-items: center;
+}
+
+.complaint-item p:last-of-type {
+    border-bottom: none;
+}
+
+.complaint-item p strong {
+    color: #495057;
+    font-weight: 600;
+    min-width: 120px;
+    margin-right: 1rem;
+    display: inline-flex;
+    align-items: center;
+}
+
+.complaint-item p strong::before {
+    margin-right: 0.5rem;
+    color: #6c757d;
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+}
+
+.complaint-item p strong:contains("ID")::before {
+    content: "\f02c";
+}
+
+.complaint-item p:has(strong:contains("Description")) {
+    background-color: #f8f9fa;
+    padding: 1rem 1.5rem;
+    border-left: 4px solid #667eea;
+}
+
+.complaint-item p:has(strong:contains("Priority")) strong {
+    color: #dc3545;
+}
+
+.complaint-item p:has(strong:contains("Submitted By")) strong::before {
+    content: "\f007";
+}
+
+.complaint-item p:has(strong:contains("Submitted At")) strong::before {
+    content: "\f017";
+}
+
+.complaint-item p:has(strong:contains("Priority")) strong::before {
+    content: "\f06a";
+}
+
+.complaint-item p:has(strong:contains("Description")) strong::before {
+    content: "\f075";
+}
+
+/* Admin Controls */
+.admin-controls {
+    background-color: #f8f9fa;
+    padding: 1rem 1.5rem;
+    border-top: 2px solid #dee2e6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.admin-badge {
+    background: linear-gradient(45deg, #ff6b6b, #ffa726);
+    color: white;
+    padding: 0.375rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.status-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.status-select {
+    border-radius: 25px;
+    border: 2px solid #dee2e6;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    background-color: white;
+    transition: all 0.3s ease;
+    min-width: 140px;
+}
+
+.status-select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    outline: none;
+}
+
+.update-btn {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 0.5rem 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.update-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
+    color: white;
+}
+
+.update-btn:active {
+    transform: scale(0.98);
+}
+
+/* Priority Styling */
+.priority-high {
+    color: #dc3545 !important;
+    font-weight: 700;
+}
+
+.priority-medium {
+    color: #fd7e14 !important;
+    font-weight: 700;
+}
+
+.priority-low {
+    color: #28a745 !important;
+    font-weight: 700;
+}
+
+/* Remove default hr styling */
+.complaint-item hr {
+    display: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .complaint-item h4 {
+        padding: 1rem;
+        font-size: 1.1rem;
+    }
+
+    .complaint-item p {
+        padding: 0.5rem 1rem;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .complaint-item p strong {
+        min-width: auto;
+        margin-right: 0;
+        margin-bottom: 0.25rem;
+    }
+
+    .admin-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .status-controls {
+        justify-content: space-between;
+    }
+}
+
+/* Animation for status updates */
+.status-updating {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.status-updated {
+    animation: statusUpdated 0.6s ease;
+}
+
+@keyframes statusUpdated {
+    0% { background-color: #d4edda; }
+    100% { background-color: transparent; }
+}

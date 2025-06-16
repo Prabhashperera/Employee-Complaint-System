@@ -65,6 +65,7 @@ public class ComplaintsServlet extends HttpServlet {
                 complaint.setTitle(rs.getString("title"));
                 complaint.setDescription(rs.getString("description"));
                 complaint.setPriority(rs.getString("priority"));
+                complaint.setStatus(rs.getString("status"));
                 complaint.setSubmittedBy(rs.getString("submitted_by"));
                 complaint.setSubmittedTime(rs.getString("submitted_at"));
                 complaintList.add(complaint);

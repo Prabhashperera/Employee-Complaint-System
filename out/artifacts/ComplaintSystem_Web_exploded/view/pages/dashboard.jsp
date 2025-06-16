@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 <%--    <link rel="stylesheet" href="../styles/dashboard.css">--%>
     <link rel="stylesheet" href="<c:url value='/view/styles/dashboard.css'/>">
+    <link rel="stylesheet" href="<c:url value='/view/styles/complaints.css'/>">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
@@ -246,19 +247,54 @@
                     </div>
                     <%-- Complaint List --%>
                     <div class="complaints-list">
-                        <c:forEach var="complaint" items="${complaintList}">
-                            <div class="complaint-item">
-                                <h4>${complaint.title}</h4>
-                                <p><strong>ID:</strong> ${complaint.id}</p>
-                                <p><strong>Description:</strong> ${complaint.description}</p>
-                                <p><strong>Priority:</strong> ${complaint.priority}</p>
-                                <p><strong>Submitted By:</strong> ${complaint.submittedBy}</p>
-                                <p><strong>Submitted At:</strong> ${complaint.submittedTime}</p>
-                                <hr/>
-                            </div>
-                        </c:forEach>
-                    </div>
+                        <!-- This is your JSP forEach loop with styling -->
+                        <!-- <c:forEach var="complaint" items="${complaintList}"> -->
+                        <div class="complaint-item card">
+                            <h4>${complaint.title}</h4>
+                            <p><strong>ID:</strong> ${complaint.status}</p>
+                            <p><strong>Description:</strong> ${complaint.description}</p>
+                            <p><strong>Priority:</strong>
+                                <span class="priority- ${complaint.priority.toLowerCase()}">
+                                        ${complaint.priority}
+                                </span>
+                            </p>
+                            <p><strong>Submitted By:</strong> ${complaint.submittedBy}</p>
+                            <p><strong>Submitted At:</strong> ${complaint.submittedTime}</p>
 
+                            <!-- Admin Only Controls -->
+                            <div class="admin-controls">
+                                <div class="admin-badge">
+                                    <i class="fas fa-user-shield"></i>
+                                    Admin Only
+                                </div>
+                                <div class="status-controls">
+                                    <select class="status-select form-select" onchange="enableUpdateBtn(this)">
+                                        <option value="pending" ${complaint.status == "Open" ? "selected" : ""}>Open</option>
+                                        <option value="resolved" ${complaint.status == "Resolved" ? "selected" : ""}>Resolved</option>
+                                    </select>
+                                    <c:choose>
+                                        <c:when test="${sessionScope.userRole == 'admin'}">
+                                            <button class="update-btn" onclick="updateComplaintStatus(this, ${complaint.id})">
+                                                <i class="fas fa-save"></i>
+                                                Update Status
+                                            </button>
+                                        </c:when>
+
+                                        <c:when test="${sessionScope.userRole == 'employee'}">
+                                            <button class="update-btn" onclick="updateComplaintStatus(this, ${complaint.id})" disabled>
+                                                <i class="fas fa-save"></i>
+                                                Update Status
+                                            </button>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <p>Value is something else 🤷‍♂️</p>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- </c:forEach> -->
+                    </div>
 
                 </section>
             </div>
