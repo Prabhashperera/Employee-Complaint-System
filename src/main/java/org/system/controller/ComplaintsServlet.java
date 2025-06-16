@@ -83,6 +83,23 @@ public class ComplaintsServlet extends HttpServlet {
             } else {
                 req.getSession().setAttribute("complaintUpdateFailed", "Failed to update complaint status");
             }
+            // fetch updated complaint list
+            PreparedStatement fetchStm = ds.getConnection().prepareStatement("SELECT * FROM complaints");
+            ResultSet rs = fetchStm.executeQuery();
+            List<ComplaintDAO> complaintList = new ArrayList<>();
+            while (rs.next()) {
+                ComplaintDAO complaint = new ComplaintDAO();
+                complaint.setId(rs.getString("id"));
+                complaint.setTitle(rs.getString("title"));
+                complaint.setDescription(rs.getString("description"));
+                complaint.setPriority(rs.getString("priority"));
+                complaint.setStatus(rs.getString("status"));
+                complaint.setSubmittedBy(rs.getString("submitted_by"));
+                complaint.setSubmittedTime(rs.getString("submitted_at"));
+                complaintList.add(complaint);
+            }
+
+            req.getSession().setAttribute("complaintList", complaintList);
 
         } catch (SQLException e) {
             e.printStackTrace();
