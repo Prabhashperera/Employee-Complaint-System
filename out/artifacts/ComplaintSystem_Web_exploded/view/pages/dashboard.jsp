@@ -251,7 +251,7 @@
                         <!-- <c:forEach var="complaint" items="${complaintList}"> -->
                         <div class="complaint-item card">
                             <h4>${complaint.title}</h4>
-                            <p><strong>ID:</strong> ${complaint.status}</p>
+                            <p><strong>ID:</strong> ${complaint.id}</p>
                             <p><strong>Description:</strong> ${complaint.description}</p>
                             <p><strong>Priority:</strong>
                                 <span class="priority- ${complaint.priority.toLowerCase()}">
@@ -270,24 +270,24 @@
                                 <div class="status-controls">
                                     <select class="status-select form-select" onchange="enableUpdateBtn(this)">
                                         <option value="pending" ${complaint.status == "Open" ? "selected" : ""}>Open</option>
+                                        <option value="in progress" ${complaint.status == "In Progress" ? "selected" : ""} >In Progress</option>
                                         <option value="resolved" ${complaint.status == "Resolved" ? "selected" : ""}>Resolved</option>
                                     </select>
                                     <c:choose>
                                         <c:when test="${sessionScope.userRole == 'admin'}">
-                                            <button class="update-btn" onclick="updateComplaintStatus(this, ${complaint.id})">
+                                            <button class="update-btn">
                                                 <i class="fas fa-save"></i>
                                                 Update Status
                                             </button>
                                         </c:when>
 
                                         <c:when test="${sessionScope.userRole == 'employee'}">
-                                            <button class="update-btn" onclick="updateComplaintStatus(this, ${complaint.id})" disabled>
+                                            <button class="update-btn" disabled>
                                                 <i class="fas fa-save"></i>
-                                                Update Status
+                                                Disabled
                                             </button>
                                         </c:when>
                                         <c:otherwise>
-                                            <p>Value is something else 🤷‍♂️</p>
                                         </c:otherwise>
                                     </c:choose>
                                 </div>

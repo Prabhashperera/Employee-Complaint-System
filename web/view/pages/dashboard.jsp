@@ -275,20 +275,19 @@
                                     </select>
                                     <c:choose>
                                         <c:when test="${sessionScope.userRole == 'admin'}">
-                                            <button class="update-btn" onclick="updateComplaintStatus(this, ${complaint.id})">
+                                            <button class="update-btn">
                                                 <i class="fas fa-save"></i>
                                                 Update Status
                                             </button>
                                         </c:when>
 
                                         <c:when test="${sessionScope.userRole == 'employee'}">
-                                            <button class="update-btn" onclick="updateComplaintStatus(this, ${complaint.id})" disabled>
+                                            <button class="update-btn" disabled>
                                                 <i class="fas fa-save"></i>
-                                                Update Status
+                                                Disabled
                                             </button>
                                         </c:when>
                                         <c:otherwise>
-                                            <p>Value is something else 🤷‍♂️</p>
                                         </c:otherwise>
                                     </c:choose>
                                 </div>
