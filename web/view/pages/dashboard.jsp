@@ -18,6 +18,15 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <!-- Font Awesome CDN -->
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+            integrity="sha512-ZwMtx5/2P2bAo7VYURDX3P9aRQ2UeRufXGHJ3N3LS1I/t0JY91SMkgf4N7CNxX2r+H2tFZC5Awz7blW5DE/NMg=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+    />
+
 <%--    <link rel="stylesheet" href="../styles/dashboard.css">--%>
     <link rel="stylesheet" href="<c:url value='/view/styles/dashboard.css'/>">
     <link rel="stylesheet" href="<c:url value='/view/styles/complaints.css'/>">
@@ -263,10 +272,31 @@
 
                             <!-- Admin Only Controls -->
                             <div class="admin-controls">
-                                <div class="admin-badge">
-                                    <i class="fas fa-user-shield"></i>
-                                    Admin Only
-                                </div>
+                                <c:choose>
+                                    <c:when test="${sessionScope.userRole == 'admin'}">
+                                        <div class="admin-badge">
+                                            <i class="fas fa-user-shield"></i>
+                                            Admin Only
+                                            <button style="border-radius: 60px" class="btn btn-danger" type="button">
+                                                <i class="fas fa-user-shield"></i>
+                                                Delete Complaint
+                                            </button>
+                                        </div>
+                                    </c:when>
+
+                                    <c:when test="${sessionScope.userRole == 'employee'}">
+                                        <div class="admin-badge">
+                                            <i class="fas fa-user-shield"></i>
+                                            Admin Only
+                                            <button style="border-radius: 60px" class="btn btn-danger" type="button" disabled="disabled">
+                                                <i class="fas fa-user-shield"></i>
+                                                Delete Complaint
+                                            </button>
+                                        </div>
+                                    </c:when>
+                                    <c:otherwise>
+                                    </c:otherwise>
+                                </c:choose>
                                 <div class="status-controls">
                                     <select class="status-select form-select" onchange="enableUpdateBtn(this)">
                                         <option value="pending" ${complaint.status == "Open" ? "selected" : ""}>Open</option>
