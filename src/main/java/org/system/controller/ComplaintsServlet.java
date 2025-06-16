@@ -34,6 +34,11 @@ public class ComplaintsServlet extends HttpServlet {
             return;
         }
 
+        if ("DELETE".equalsIgnoreCase(method)) {
+            handleDeleteComplaint(req, resp);
+            return;
+        }
+
         // Handle normal POST request (create new complaint)
         try {
             PreparedStatement stm = ds.getConnection().prepareStatement("INSERT INTO complaints values(?,?,?,?,?,?,?)");
@@ -60,6 +65,38 @@ public class ComplaintsServlet extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/view/pages/dashboard.jsp");
             e.printStackTrace();
         }
+    }
+
+    private void handleDeleteComplaint(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        try{
+            String id = req.getParameter("id");
+            PreparedStatement stm = ds.getConnection().prepareStatement("DELETE FROM complaints WHERE id = ?");
+            stm.setString(1, id);
+            int i = stm.executeUpdate();
+            System.out.println(i + " Deleted");
+            if (i > 0) {
+                // fetch updated complaint list
+                PreparedStatement fetchStm = ds.getConnection().prepareStatement("SELECT * FROM complaints");
+                ResultSet rs = fetchStm.executeQuery();
+                List<ComplaintDAO> complaintList = new ArrayList<>();
+                while (rs.next()) {
+                    ComplaintDAO complaint = new ComplaintDAO();
+                    complaint.setId(rs.getString("id"));
+                    complaint.setTitle(rs.getString("title"));
+                    complaint.setDescription(rs.getString("description"));
+                    complaint.setPriority(rs.getString("priority"));
+                    complaint.setStatus(rs.getString("status"));
+                    complaint.setSubmittedBy(rs.getString("submitted_by"));
+                    complaint.setSubmittedTime(rs.getString("submitted_at"));
+                    complaintList.add(complaint);
+                }
+
+                req.getSession().setAttribute("complaintList", complaintList);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        resp.sendRedirect(req.getContextPath() + "/view/pages/dashboard.jsp?view=complaints");
     }
 
     // Separate method to handle complaint updates

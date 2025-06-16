@@ -286,10 +286,14 @@
                                             <div class="admin-badge">
                                                 <i class="fas fa-user-shield"></i>
                                                 Admin Only
-                                                <button style="border-radius: 60px" class="btn btn-danger" type="button">
-                                                    <i class="fas fa-user-shield"></i>
-                                                    Delete Complaint
-                                                </button>
+                                                <form action="/cs/saveComplaint" method="post">
+                                                    <input type="hidden" name="id" value="${complaint.id}">
+                                                    <input type="hidden" name="_method" value="DELETE">
+                                                    <button style="border-radius: 60px" class="btn btn-danger" type="submit">
+                                                        <i class="fas fa-user-shield"></i>
+                                                        Delete Complaint
+                                                    </button>
+                                                </form>
                                             </div>
                                         </c:when>
 
