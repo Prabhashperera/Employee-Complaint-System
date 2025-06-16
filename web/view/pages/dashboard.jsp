@@ -116,217 +116,238 @@
         <div class="col-lg-9 col-md-8">
             <%-- TODO:ReplaceMenter--%>
             <div class="main-content">
-<%--                //Dashboard Section--%>
-                <section class="dashboard-section">
-                    <!-- Dashboard Header -->
-                    <div class="dashboard-header">
-                        <div class="row align-items-center">
-                            <div class="col-md-8">
-                                <h2 class="mb-1">
-                                    <i class="bi bi-house"></i> Welcome back, <%= userName %>!
-                                </h2>
-                                <p class="mb-0">Manage your complaints efficiently</p>
-                            </div>
-                            <div class="col-md-4 text-md-end">
-                                <div class="time-display">
-                                    <i class="bi bi-clock"></i>
-                                    <span id="currentTime"></span>
+
+                <%
+                    String showSection = request.getParameter("view");
+                    boolean showComplaints = "complaints".equals(showSection);
+                %>
+
+                <section class="dashboard-section" style="<%= showComplaints ? "display:none;" : "display:block;" %>">
+                    <!-- Dashboard stuff -->
+                    <section class="dashboard-section">
+                        <!-- Dashboard Header -->
+                        <div class="dashboard-header">
+                            <div class="row align-items-center">
+                                <div class="col-md-8">
+                                    <h2 class="mb-1">
+                                        <i class="bi bi-house"></i> Welcome back, <%= userName %>!
+                                    </h2>
+                                    <p class="mb-0">Manage your complaints efficiently</p>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Quick Stats -->
-                    <div class="row mb-4">
-                        <div class="col-md-4 mb-3">
-                            <div class="card card-custom text-center">
-                                <div class="card-body">
-                                    <i class="bi bi-clipboard-plus text-primary" style="font-size: 2rem;"></i>
-                                    <h5 class="card-title mt-2">New Complaints</h5>
-                                    <h3 class="text-primary">12</h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <div class="card card-custom text-center">
-                                <div class="card-body">
-                                    <i class="bi bi-clock-history text-warning" style="font-size: 2rem;"></i>
-                                    <h5 class="card-title mt-2">Pending</h5>
-                                    <h3 class="text-warning">8</h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <div class="card card-custom text-center">
-                                <div class="card-body">
-                                    <i class="bi bi-check-circle text-success" style="font-size: 2rem;"></i>
-                                    <h5 class="card-title mt-2">Resolved</h5>
-                                    <h3 class="text-success">45</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- New Complaint Form -->
-                    <div class="card card-custom">
-                        <div class="card-header bg-primary text-white">
-                            <h5 class="mb-0">
-                                <i class="bi bi-plus-circle"></i> Submit New Complaint
-                            </h5>
-                        </div>
-                        <div class="card-body">
-
-                            <c:if test="${not empty sessionScope.complaintSaved}">
-                                <script>
-                                    Swal.fire({
-                                        icon: 'success',
-                                        title: 'Success!',
-                                        text: '${complaintSaved}'
-                                    });
-                                </script>
-                                <c:remove var="complaintSaved" scope="session"/>
-                            </c:if>
-
-                            <c:if test="${not empty sessionScope.complaintNotSaved}">
-                                <script>
-                                    Swal.fire({
-                                        icon: 'error',
-                                        title: 'Oops!',
-                                        text: '${complaintNotSaved}'
-                                    });
-                                </script>
-                                <c:remove var="complaintNotSaved" scope="session"/>
-                            </c:if>
-
-                            <form id="complaintForm" action="/cs/saveComplaint" method="post">
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label for="complaintTitle" class="form-label">
-                                            <i class="bi bi-card-heading"></i> Complaint Title *
-                                        </label>
-                                        <input type="text" class="form-control" id="complaintTitle"
-                                               name="title" required placeholder="Enter complaint title">
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="priority" class="form-label">
-                                            <i class="bi bi-exclamation-triangle"></i> Priority *
-                                        </label>
-                                        <select class="form-select" id="priority" name="priority" required>
-                                            <option name="none" value="">Select Priority</option>
-                                            <option name="Low" value="Low" class="priority-low">Low</option>
-                                            <option name="Medium" value="Medium" class="priority-medium">Medium</option>
-                                            <option name="High" value="High" class="priority-high">High</option>
-                                        </select>
+                                <div class="col-md-4 text-md-end">
+                                    <div class="time-display">
+                                        <i class="bi bi-clock"></i>
+                                        <span id="currentTime"></span>
                                     </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="description" class="form-label">
-                                        <i class="bi bi-text-paragraph"></i> Description *
-                                    </label>
-                                    <textarea class="form-control" id="description" name="description"
-                                              rows="4" required placeholder="Describe your complaint in detail..."></textarea>
-                                </div>
-                                <input type="hidden" name="submittedBy" id="submittedBy" value="<%= userName %>">
-                                <input type="hidden" name="submittedAt" id="submittedAt">
-                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                    <button type="reset" class="btn btn-outline-secondary me-md-2">
-                                        <i class="bi bi-arrow-clockwise"></i> Reset
-                                    </button>
-                                    <button type="submit" class="btn btn-primary-custom">
-                                        <i class="bi bi-send"></i> Submit Complaint
-                                    </button>
-                                </div>
-                            </form>
+                            </div>
                         </div>
-                    </div>
+
+                        <!-- Quick Stats -->
+                        <div class="row mb-4">
+                            <div class="col-md-4 mb-3">
+                                <div class="card card-custom text-center">
+                                    <div class="card-body">
+                                        <i class="bi bi-clipboard-plus text-primary" style="font-size: 2rem;"></i>
+                                        <h5 class="card-title mt-2">New Complaints</h5>
+                                        <h3 class="text-primary">12</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="card card-custom text-center">
+                                    <div class="card-body">
+                                        <i class="bi bi-clock-history text-warning" style="font-size: 2rem;"></i>
+                                        <h5 class="card-title mt-2">Pending</h5>
+                                        <h3 class="text-warning">8</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="card card-custom text-center">
+                                    <div class="card-body">
+                                        <i class="bi bi-check-circle text-success" style="font-size: 2rem;"></i>
+                                        <h5 class="card-title mt-2">Resolved</h5>
+                                        <h3 class="text-success">45</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- New Complaint Form -->
+                        <div class="card card-custom">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0">
+                                    <i class="bi bi-plus-circle"></i> Submit New Complaint
+                                </h5>
+                            </div>
+                            <div class="card-body">
+
+                                <c:if test="${not empty sessionScope.complaintSaved}">
+                                    <script>
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Success!',
+                                            text: '${complaintSaved}'
+                                        });
+                                    </script>
+                                    <c:remove var="complaintSaved" scope="session"/>
+                                </c:if>
+
+                                <c:if test="${not empty sessionScope.complaintNotSaved}">
+                                    <script>
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Oops!',
+                                            text: '${complaintNotSaved}'
+                                        });
+                                    </script>
+                                    <c:remove var="complaintNotSaved" scope="session"/>
+                                </c:if>
+
+                                <form id="complaintForm" action="/cs/saveComplaint" method="post">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="complaintTitle" class="form-label">
+                                                <i class="bi bi-card-heading"></i> Complaint Title *
+                                            </label>
+                                            <input type="text" class="form-control" id="complaintTitle"
+                                                   name="title" required placeholder="Enter complaint title">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="priority" class="form-label">
+                                                <i class="bi bi-exclamation-triangle"></i> Priority *
+                                            </label>
+                                            <select class="form-select" id="priority" name="priority" required>
+                                                <option name="none" value="">Select Priority</option>
+                                                <option name="Low" value="Low" class="priority-low">Low</option>
+                                                <option name="Medium" value="Medium" class="priority-medium">Medium</option>
+                                                <option name="High" value="High" class="priority-high">High</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="description" class="form-label">
+                                            <i class="bi bi-text-paragraph"></i> Description *
+                                        </label>
+                                        <textarea class="form-control" id="description" name="description"
+                                                  rows="4" required placeholder="Describe your complaint in detail..."></textarea>
+                                    </div>
+                                    <input type="hidden" name="submittedBy" id="submittedBy" value="<%= userName %>">
+                                    <input type="hidden" name="submittedAt" id="submittedAt">
+                                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                        <button type="reset" class="btn btn-outline-secondary me-md-2">
+                                            <i class="bi bi-arrow-clockwise"></i> Reset
+                                        </button>
+                                        <button type="submit" class="btn btn-primary-custom">
+                                            <i class="bi bi-send"></i> Submit Complaint
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </section>
                 </section>
 
-<%--                //Complaint Section--%>
-                <section style="display: none" class="complaint-section">
-                    <!-- Dashboard Header -->
-                    <div class="dashboard-header">
-                        <div class="row align-items-center">
-                            <div class="col-md-8">
-                                <h2 class="mb-1">
-                                    <i class="bi bi-house"></i> Do you Have Any Complaints ? , <%= userName %>!
-                                </h2>
-                                <p class="mb-0">Manage your complaints efficiently</p>
+                <section class="complaint-section" style="<%= showComplaints ? "display:block;" : "display:none;" %>">
+                    <!-- Complaints list -->
+                    <section class="complaint-section">
+                        <!-- Dashboard Header -->
+                        <div class="dashboard-header">
+                            <div class="row align-items-center">
+                                <div class="col-md-8">
+                                    <h2 class="mb-1">
+                                        <i class="bi bi-house"></i> Do you Have Any Complaints ? , <%= userName %>!
+                                    </h2>
+                                    <p class="mb-0">Manage your complaints efficiently</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <%-- Complaint List --%>
-                    <div class="complaints-list">
-                        <!-- This is your JSP forEach loop with styling -->
-                        <!-- <c:forEach var="complaint" items="${complaintList}"> -->
-                        <div class="complaint-item card">
-                            <h4>${complaint.title}</h4>
-                            <p><strong>ID:</strong> ${complaint.id}</p>
-                            <p><strong>Description:</strong> ${complaint.description}</p>
-                            <p><strong>Priority:</strong>
-                                <span class="priority- ${complaint.priority.toLowerCase()}">
-                                        ${complaint.priority}
-                                </span>
-                            </p>
-                            <p><strong>Submitted By:</strong> ${complaint.submittedBy}</p>
-                            <p><strong>Submitted At:</strong> ${complaint.submittedTime}</p>
+                        <%-- Complaint List --%>
+                        <div class="complaints-list">
+                            <!-- This is your JSP forEach loop with styling -->
+                            <!-- <c:forEach var="complaint" items="${complaintList}"> -->
+                            <div class="complaint-item card">
+                                <h4>${complaint.title}</h4>
+                                <p><strong>ID:</strong> ${complaint.id}</p>
+                                <p><strong>Description:</strong> ${complaint.description}</p>
+                                <p><strong>Priority:</strong>
+                                    <span class="priority- ${complaint.priority.toLowerCase()}">
+                                            ${complaint.priority}
+                                    </span>
+                                </p>
+                                <p><strong>Submitted By:</strong> ${complaint.submittedBy}</p>
+                                <p><strong>Submitted At:</strong> ${complaint.submittedTime}</p>
 
-                            <!-- Admin Only Controls -->
-                            <div class="admin-controls">
-                                <c:choose>
-                                    <c:when test="${sessionScope.userRole == 'admin'}">
-                                        <div class="admin-badge">
-                                            <i class="fas fa-user-shield"></i>
-                                            Admin Only
-                                            <button style="border-radius: 60px" class="btn btn-danger" type="button">
-                                                <i class="fas fa-user-shield"></i>
-                                                Delete Complaint
-                                            </button>
-                                        </div>
-                                    </c:when>
-
-                                    <c:when test="${sessionScope.userRole == 'employee'}">
-                                        <div class="admin-badge">
-                                            <i class="fas fa-user-shield"></i>
-                                            Admin Only
-                                            <button style="border-radius: 60px" class="btn btn-danger" type="button" disabled="disabled">
-                                                <i class="fas fa-user-shield"></i>
-                                                Delete Complaint
-                                            </button>
-                                        </div>
-                                    </c:when>
-                                    <c:otherwise>
-                                    </c:otherwise>
-                                </c:choose>
-                                <div class="status-controls">
-                                    <select class="status-select form-select" onchange="enableUpdateBtn(this)">
-                                        <option value="pending" ${complaint.status == "Open" ? "selected" : ""}>Open</option>
-                                        <option value="in progress" ${complaint.status == "In Progress" ? "selected" : ""} >In Progress</option>
-                                        <option value="resolved" ${complaint.status == "Resolved" ? "selected" : ""}>Resolved</option>
-                                    </select>
+                                <!-- Admin Only Controls -->
+                                <div class="admin-controls">
                                     <c:choose>
                                         <c:when test="${sessionScope.userRole == 'admin'}">
-                                            <button class="update-btn">
-                                                <i class="fas fa-save"></i>
-                                                Update Status
-                                            </button>
+                                            <div class="admin-badge">
+                                                <i class="fas fa-user-shield"></i>
+                                                Admin Only
+                                                <button style="border-radius: 60px" class="btn btn-danger" type="button">
+                                                    <i class="fas fa-user-shield"></i>
+                                                    Delete Complaint
+                                                </button>
+                                            </div>
                                         </c:when>
 
                                         <c:when test="${sessionScope.userRole == 'employee'}">
-                                            <button class="update-btn" disabled>
-                                                <i class="fas fa-save"></i>
-                                                Disabled
-                                            </button>
+                                            <div class="admin-badge">
+                                                <i class="fas fa-user-shield"></i>
+                                                Admin Only
+                                                <button style="border-radius: 60px" class="btn btn-danger" type="button" disabled="disabled">
+                                                    <i class="fas fa-user-shield"></i>
+                                                    Delete Complaint
+                                                </button>
+                                            </div>
                                         </c:when>
                                         <c:otherwise>
                                         </c:otherwise>
                                     </c:choose>
+                                    <div class="status-controls">
+                                        <c:choose>
+                                            <c:when test="${sessionScope.userRole == 'admin'}">
+                                                <form class="d-flex gap-3" action="/cs/saveComplaint" method="POST">
+                                                    <input type="hidden" name="_method" value="PUT">
+                                                    <input type="hidden" name="complaintId" value="${complaint.id}">
+
+                                                    <select class="status-select form-select" name="status" onchange="enableUpdateBtn(this)">
+                                                        <option value="Open" ${complaint.status == "Open" ? "selected" : ""}>Open</option>
+                                                        <option value="In Progress" ${complaint.status == "In Progress" ? "selected" : ""}>In Progress</option>
+                                                        <option value="Resolved" ${complaint.status == "Resolved" ? "selected" : ""}>Resolved</option>
+                                                    </select>
+
+                                                    <button type="submit" class="update-btn">
+                                                        <i class="fas fa-save"></i> Update
+                                                    </button>
+                                                </form>
+                                            </c:when>
+
+                                            <c:when test="${sessionScope.userRole == 'employee'}">
+                                                <div class="d-flex gap-3">
+                                                    <select class="status-select form-select" disabled>
+                                                        <option value="Open" ${complaint.status == "Open" ? "selected" : ""}>Open</option>
+                                                        <option value="In Progress" ${complaint.status == "In Progress" ? "selected" : ""}>In Progress</option>
+                                                        <option value="Resolved" ${complaint.status == "Resolved" ? "selected" : ""}>Resolved</option>
+                                                    </select>
+
+                                                    <button class="update-btn" disabled>
+                                                        <i class="fas fa-save"></i> Disabled
+                                                    </button>
+                                                </div>
+                                            </c:when>
+                                        </c:choose>
+                                    </div>
                                 </div>
                             </div>
+                            <!-- </c:forEach> -->
                         </div>
-                        <!-- </c:forEach> -->
-                    </div>
 
+                    </section>
                 </section>
+
             </div>
         </div>
     </div>

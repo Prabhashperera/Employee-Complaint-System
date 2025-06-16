@@ -26,6 +26,15 @@ public class ComplaintsServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String method = req.getParameter("_method");
+
+        // Check if this is a PUT request (update)
+        if ("PUT".equalsIgnoreCase(method)) {
+            handleUpdateComplaint(req, resp);
+            return;
+        }
+
+        // Handle normal POST request (create new complaint)
         try {
             PreparedStatement stm = ds.getConnection().prepareStatement("INSERT INTO complaints values(?,?,?,?,?,?,?)");
             String nextID = IdGeneratorWithPrefix.generateNextId(ds, "Complaints", "id", "C", 3);
@@ -40,17 +49,48 @@ public class ComplaintsServlet extends HttpServlet {
             int i = stm.executeUpdate();
             if (i > 0) {
                 req.getSession().setAttribute("complaintSaved", "Complaint Saved");
-            }else {
+            } else {
                 req.getSession().setAttribute("complaintNotSaved", "Complaint NOT Saved");
             }
             System.out.println(i);
             resp.sendRedirect(req.getContextPath() + "/view/pages/dashboard.jsp");
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             req.getSession().setAttribute("complaintNotSaved", "Complaint NOT Saved");
             resp.sendRedirect(req.getContextPath() + "/view/pages/dashboard.jsp");
             e.printStackTrace();
         }
+    }
+
+    // Separate method to handle complaint updates
+    private void handleUpdateComplaint(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            String complaintId = req.getParameter("complaintId");
+            String status = req.getParameter("status");
+
+            System.out.println("Updating complaint ID: " + complaintId + " with status: " + status);
+
+            PreparedStatement stm = ds.getConnection().prepareStatement(
+                    "UPDATE complaints SET status = ? WHERE id = ?"
+            );
+            stm.setString(1, status);
+            stm.setString(2, complaintId);
+
+            int rowsUpdated = stm.executeUpdate();
+
+            if (rowsUpdated > 0) {
+                req.getSession().setAttribute("complaintUpdated", "Complaint status updated successfully");
+            } else {
+                req.getSession().setAttribute("complaintUpdateFailed", "Failed to update complaint status");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            req.getSession().setAttribute("complaintUpdateFailed", "Database error occurred");
+        }
+
+        // Redirect back to complaints view
+        resp.sendRedirect(req.getContextPath() + "/view/pages/dashboard.jsp?view=complaints");
     }
 
     @Override
