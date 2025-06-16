@@ -106,6 +106,7 @@
         <div class="col-lg-9 col-md-8">
             <%-- TODO:ReplaceMenter--%>
             <div class="main-content">
+                //Dashboard Section
                 <section class="dashboard-section">
                     <!-- Dashboard Header -->
                     <div class="dashboard-header">
@@ -229,18 +230,25 @@
                         </div>
                     </div>
                 </section>
+
+                //Complaint Section
                 <section style="display: none" class="complaint-section">
                     <!-- Dashboard Header -->
                     <div class="dashboard-header">
                         <div class="row align-items-center">
                             <div class="col-md-8">
                                 <h2 class="mb-1">
-                                    <i class="bi bi-house"></i> Welcome back, <%= userName %>!
+                                    <i class="bi bi-house"></i> Do you Have Any Complaints ? , <%= userName %>!
                                 </h2>
                                 <p class="mb-0">Manage your complaints efficiently</p>
                             </div>
                         </div>
                     </div>
+                    <%-- Complaint List --%>
+                    <div class="complaints-list">
+
+                    </div>
+
                 </section>
             </div>
         </div>

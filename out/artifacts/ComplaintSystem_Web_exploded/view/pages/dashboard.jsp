@@ -235,7 +235,7 @@
                         <div class="row align-items-center">
                             <div class="col-md-8">
                                 <h2 class="mb-1">
-                                    <i class="bi bi-house"></i> Welcome back, <%= userName %>!
+                                    <i class="bi bi-house"></i> Do you Have Any Complaints ? , <%= userName %>!
                                 </h2>
                                 <p class="mb-0">Manage your complaints efficiently</p>
                             </div>
@@ -251,12 +251,16 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
-    //Routing
+    //Routing's
     $(".show_Complaints").click(() => {
         $(".complaint-section").css("display", "block");
         $(".dashboard-section").css("display", "none");
     });
 
+    $(".show_Dashboard").click(() => {
+        $(".dashboard-section").css("display", "block");
+        $(".complaint-section").css("display", "none");
+    });
 
     // Update current time
     function updateTime() {
