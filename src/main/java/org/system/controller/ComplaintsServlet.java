@@ -26,7 +26,6 @@ public class ComplaintsServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String method = req.getParameter("_method");
-        String user = req.getParameter("_user");
 
         // Check if this is a PUT request (update)
         if ("PUT".equalsIgnoreCase(method)) {
@@ -36,6 +35,7 @@ public class ComplaintsServlet extends HttpServlet {
 
         // Check if this is a Delete request (Delete)
         if ("DELETE".equalsIgnoreCase(method)) {
+            String user = req.getParameter("_user");
             handleDeleteComplaint(req, resp, user);
             return;
         }

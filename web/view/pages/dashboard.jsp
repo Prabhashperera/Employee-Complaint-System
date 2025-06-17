@@ -157,7 +157,7 @@
                                     <div class="card-body">
                                         <i class="bi bi-clipboard-plus text-primary" style="font-size: 2rem;"></i>
                                         <h5 class="card-title mt-2">New Complaints</h5>
-                                        <h3 class="text-primary">12</h3>
+                                        <h3 class="text-primary"><%= request.getAttribute("newComplaints") %></h3>
                                     </div>
                                 </div>
                             </div>
@@ -166,7 +166,7 @@
                                     <div class="card-body">
                                         <i class="bi bi-clock-history text-warning" style="font-size: 2rem;"></i>
                                         <h5 class="card-title mt-2">Pending</h5>
-                                        <h3 class="text-warning">8</h3>
+                                        <h3 class="text-warning"><%= request.getAttribute("pending") %></h3>
                                     </div>
                                 </div>
                             </div>
@@ -175,7 +175,7 @@
                                     <div class="card-body">
                                         <i class="bi bi-check-circle text-success" style="font-size: 2rem;"></i>
                                         <h5 class="card-title mt-2">Resolved</h5>
-                                        <h3 class="text-success">45</h3>
+                                        <h3 class="text-success"><%= request.getAttribute("resolved") %></h3>
                                     </div>
                                 </div>
                             </div>
@@ -293,6 +293,7 @@
                                         <form action="/cs/saveComplaint" method="post">
                                             <input type="hidden" name="id" value="${complaint.id}">
                                             <input type="hidden" name="_method" value="DELETE">
+                                            <input type="hidden" name="_user" value="ADMIN">
                                         <div class="admin-badge">
                                                 <i class="fas fa-user-shield"></i>
                                                 Admin Only
