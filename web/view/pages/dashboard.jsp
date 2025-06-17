@@ -78,7 +78,8 @@
             <div class="sidebar">
                 <!-- Profile Section -->
                 <div class="sidebar-header">
-                    <img src="https://via.placeholder.com/80x80/ffffff/3498db?text=<%= userName.substring(0,1).toUpperCase() %>"
+<%--                    Random Avatar Img--%>
+                    <img src="https://xsgames.co/randomusers/avatar.php?g=pixel"
                          alt="Profile" class="profile-img">
                     <h5 class="mb-1"><%= userName %></h5>
                     <small><%= userEmail %></small>
