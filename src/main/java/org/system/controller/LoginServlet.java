@@ -45,9 +45,10 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("userName", user.getName());
                 session.setAttribute("userEmail", user.getEmail());
                 System.out.println(user.getEmail());
-                session.setAttribute("userRole", user.getRole());
 
-                req.getRequestDispatcher("/view/pages/dashboard.jsp").forward(req, resp);
+                session.setAttribute("userRole", user.getRole());
+//                req.getRequestDispatcher("/view/pages/dashboard.jsp").forward(req, resp);
+                resp.sendRedirect( req.getContextPath() + "/view/pages/dashboard.jsp");
             }else {
                 req.getSession().setAttribute("error", "Invalid Email or Password");
                 resp.sendRedirect(req.getContextPath() + "/view/pages/signinPage.jsp");
