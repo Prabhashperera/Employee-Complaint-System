@@ -62,8 +62,6 @@
                         <i class="bi bi-person-circle"></i> <%= userName %>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#"><i class="bi bi-person"></i> Profile</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="bi bi-gear"></i> Settings</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a href="${pageContext.request.contextPath}/logout" class="dropdown-item"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
                     </ul>
@@ -94,10 +92,18 @@
                     <a href="/cs/view/pages/dashboard.jsp" class="nav-link-custom active show_Dashboard">
                         <i class="bi bi-speedometer2"></i> Dashboard
                     </a>
+                    <% if ("employee".equals(userRole)){ %>
+                    <form action="/cs/mycomplaints" method="POST">
+                        <input type="hidden" value="<%= userEmail %>" name="userEmail">
+                        <button type="submit" class="nav-link-custom show_Complaints">
+                            <i class="bi bi-list-ul"></i> My Complaints
+                        </button>
+                    </form>
+                    <% } %>
+                    <% if ("admin".equals(userRole)){ %>
                     <a href="/cs/saveComplaint" class="nav-link-custom show_Complaints">
                         <i class="bi bi-list-ul"></i> Show Complaints
                     </a>
-                    <% if ("admin".equals(userRole)){ %>
                     <a href="#" class="nav-link-custom">
                         <i class="bi bi-people"></i> Employee Manage
                     </a>
@@ -233,7 +239,7 @@
                                         <textarea class="form-control" id="description" name="description"
                                                   rows="4" required placeholder="Describe your complaint in detail..."></textarea>
                                     </div>
-                                    <input type="hidden" name="submittedBy" id="submittedBy" value="<%= userName %>">
+                                    <input type="hidden" name="submittedBy" id="submittedBy" value="<%= userEmail %>">
                                     <input type="hidden" name="submittedAt" id="submittedAt">
                                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                         <button type="reset" class="btn btn-outline-secondary me-md-2">
@@ -298,14 +304,20 @@
                                         </c:when>
 
                                         <c:when test="${sessionScope.userRole == 'employee'}">
-                                            <div class="admin-badge">
-                                                <i class="fas fa-user-shield"></i>
-                                                Admin Only
-                                                <button style="border-radius: 60px" class="btn btn-danger" type="button" disabled="disabled">
+                                            <form action="/cs/saveComplaint" method="post">
+                                                <input type="hidden" name="id" value="${complaint.id}">
+                                                <input type="hidden" name="_method" value="DELETE">
+                                                <input type="hidden" name="_user" value="EMPLOYEE">
+                                                <input type="hidden" name="_email" value="<%= userEmail %>">
+                                                <div class="admin-badge">
                                                     <i class="fas fa-user-shield"></i>
-                                                    Delete Complaint
-                                                </button>
-                                            </div>
+                                                    Admin Only
+                                                    <button style="border-radius: 60px" class="btn btn-danger" type="submit">
+                                                        <i class="fas fa-user-shield"></i>
+                                                        Delete Complaint
+                                                    </button>
+                                                </div>
+                                            </form>
                                         </c:when>
                                         <c:otherwise>
                                         </c:otherwise>

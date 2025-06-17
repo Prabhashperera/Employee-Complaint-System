@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.system.crud.IdGeneratorWithPrefix;
 import org.system.dao.ComplaintDAO;
-import org.system.model.ComplaintModel;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -27,6 +26,7 @@ public class ComplaintsServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String method = req.getParameter("_method");
+        String user = req.getParameter("_user");
 
         // Check if this is a PUT request (update)
         if ("PUT".equalsIgnoreCase(method)) {
@@ -36,7 +36,7 @@ public class ComplaintsServlet extends HttpServlet {
 
         // Check if this is a Delete request (Delete)
         if ("DELETE".equalsIgnoreCase(method)) {
-            handleDeleteComplaint(req, resp);
+            handleDeleteComplaint(req, resp, user);
             return;
         }
 
@@ -69,18 +69,32 @@ public class ComplaintsServlet extends HttpServlet {
     }
 
     // Separate method to handle complaint Deletes
-    private void handleDeleteComplaint(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        try{
+    private void handleDeleteComplaint(HttpServletRequest req, HttpServletResponse resp, String user) throws IOException, ServletException {
+        try {
+            String employeeMail = req.getParameter("userEmail");
             String id = req.getParameter("id");
-            PreparedStatement stm = ds.getConnection().prepareStatement("DELETE FROM complaints WHERE id = ?");
-            stm.setString(1, id);
-            int i = stm.executeUpdate();
+
+            // Delete the complaint
+            PreparedStatement deleteStm = ds.getConnection().prepareStatement("DELETE FROM complaints WHERE id = ?");
+            deleteStm.setString(1, id);
+            int i = deleteStm.executeUpdate();
+
             System.out.println(i + " Deleted");
+
             if (i > 0) {
-                // fetch updated complaint list
-                PreparedStatement fetchStm = ds.getConnection().prepareStatement("SELECT * FROM complaints");
-                ResultSet rs = fetchStm.executeQuery();
                 List<ComplaintDAO> complaintList = new ArrayList<>();
+                PreparedStatement fetchStm;
+
+                // Fetch complaints depending on the role
+                if (!user.equals("EMPLOYEE")) {
+                    fetchStm = ds.getConnection().prepareStatement("SELECT * FROM complaints");
+                } else {
+                    fetchStm = ds.getConnection().prepareStatement("SELECT * FROM complaints WHERE submitted_by = ?");
+                    fetchStm.setString(1, employeeMail);
+                }
+
+                ResultSet rs = fetchStm.executeQuery();
+
                 while (rs.next()) {
                     ComplaintDAO complaint = new ComplaintDAO();
                     complaint.setId(rs.getString("id"));
@@ -98,6 +112,8 @@ public class ComplaintsServlet extends HttpServlet {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
+        // Redirect back to complaints view for both roles
         resp.sendRedirect(req.getContextPath() + "/view/pages/dashboard.jsp?view=complaints");
     }
 
