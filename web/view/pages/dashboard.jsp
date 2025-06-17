@@ -65,7 +65,7 @@
                         <li><a class="dropdown-item" href="#"><i class="bi bi-person"></i> Profile</a></li>
                         <li><a class="dropdown-item" href="#"><i class="bi bi-gear"></i> Settings</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="<%= request.getContextPath() %>/logout"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+                        <li><a href="${pageContext.request.contextPath}/logout" class="dropdown-item"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
                     </ul>
                 </li>
             </ul>
@@ -91,7 +91,7 @@
 
                 <!-- Navigation Links -->
                 <div class="list-group list-group-flush">
-                    <a href="#" class="nav-link-custom active show_Dashboard">
+                    <a href="/cs/view/pages/dashboard.jsp" class="nav-link-custom active show_Dashboard">
                         <i class="bi bi-speedometer2"></i> Dashboard
                     </a>
                     <a href="/cs/saveComplaint" class="nav-link-custom show_Complaints">
@@ -283,18 +283,18 @@
                                 <div class="admin-controls">
                                     <c:choose>
                                         <c:when test="${sessionScope.userRole == 'admin'}">
-                                            <div class="admin-badge">
+                                        <form action="/cs/saveComplaint" method="post">
+                                            <input type="hidden" name="id" value="${complaint.id}">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                        <div class="admin-badge">
                                                 <i class="fas fa-user-shield"></i>
                                                 Admin Only
-                                                <form action="/cs/saveComplaint" method="post">
-                                                    <input type="hidden" name="id" value="${complaint.id}">
-                                                    <input type="hidden" name="_method" value="DELETE">
                                                     <button style="border-radius: 60px" class="btn btn-danger" type="submit">
                                                         <i class="fas fa-user-shield"></i>
                                                         Delete Complaint
                                                     </button>
-                                                </form>
                                             </div>
+                                        </form>
                                         </c:when>
 
                                         <c:when test="${sessionScope.userRole == 'employee'}">

@@ -34,6 +34,7 @@ public class ComplaintsServlet extends HttpServlet {
             return;
         }
 
+        // Check if this is a Delete request (Delete)
         if ("DELETE".equalsIgnoreCase(method)) {
             handleDeleteComplaint(req, resp);
             return;
@@ -67,6 +68,7 @@ public class ComplaintsServlet extends HttpServlet {
         }
     }
 
+    // Separate method to handle complaint Deletes
     private void handleDeleteComplaint(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try{
             String id = req.getParameter("id");
