@@ -96,7 +96,7 @@
                     <% if ("employee".equals(userRole)){ %>
                     <form action="/cs/mycomplaints" method="POST">
                         <input type="hidden" value="<%= userEmail %>" name="userEmail">
-                        <button type="submit" class="nav-link-custom show_Complaints">
+                        <button style="background-color: white" type="submit" class="nav-link-custom show_Complaints">
                             <i class="bi bi-list-ul"></i> My Complaints
                         </button>
                     </form>
@@ -109,12 +109,6 @@
                         <i class="bi bi-people"></i> Employee Manage
                     </a>
                     <% } %>
-                    <a href="#" class="nav-link-custom">
-                        <i class="bi bi-bar-chart"></i> Reports
-                    </a>
-                    <a href="#" class="nav-link-custom">
-                        <i class="bi bi-gear"></i> Settings
-                    </a>
                 </div>
             </div>
         </div>
