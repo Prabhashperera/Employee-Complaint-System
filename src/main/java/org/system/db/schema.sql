@@ -18,6 +18,35 @@ USE `complaint_db`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `complaints`
+--
+
+DROP TABLE IF EXISTS `complaints`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `complaints` (
+  `id` varchar(10) NOT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `description` text,
+  `priority` varchar(20) DEFAULT NULL,
+  `status` varchar(20) DEFAULT 'Open',
+  `submitted_by` varchar(50) NOT NULL,
+  `submitted_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `complaints`
+--
+
+LOCK TABLES `complaints` WRITE;
+/*!40000 ALTER TABLE `complaints` DISABLE KEYS */;
+INSERT INTO `complaints` VALUES ('C001','Broken AC in Office','The AC in the admin office is not working.','High','Resolved','prabash@municipal.gov','2025-06-11 18:12:01'),('C002','Slow Internet','Internet is very slow on the second floor.','Medium','Resolved','theersha@municipal.gov','2025-06-11 18:12:01'),('C003','Coffee Machine Broken','Coffee machine in pantry is leaking water.','Low','In Progress','elisha@municipal.gov','2025-06-11 18:12:01'),('C004','Prbaash','sdsdhsd','High','Open','123@gmail.com','2025-06-19 02:56:02');
+/*!40000 ALTER TABLE `complaints` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `users`
 --
 
@@ -52,4 +81,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-06-19 23:31:45
+-- Dump completed on 2025-06-19 23:35:12
