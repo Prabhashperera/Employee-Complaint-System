@@ -35,6 +35,8 @@ Employee-Complaint-System/
 ├── README.md
 └── pom.xml (if using Maven)
 
+![ChatGPT Image Jun 20, 2025, 11_04_09 PM](https://github.com/user-attachments/assets/0a17bada-b3a0-4691-ab0e-171413a2b0fd)
+
 
 ## ⚙️ Setup & Configuration Guide
 
